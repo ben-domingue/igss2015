@@ -17,7 +17,8 @@ make_pgs<-function(plink.file=NULL,gwas.file="/tmp/GWAS.result",wd="/tmp/grs/",o
     getwd()->orig.dir
     system(paste("mkdir ",wd))
     setwd(wd)
-    #i'm just creating symbolic links here so that i can work in one directory. not really imperative that you do something like this, but if you don't youll need to change directory stuff downstream.
+    system("unlink gen.bim && unlink gen.bed && unlink gen.fam")
+    ##i'm just creating symbolic links here so that i can work in one directory. not really imperative that you do something like this, but if you don't youll need to change directory stuff downstream.
     system(paste("ln -s ",plink.file,".bed ./gen.bed",sep=""))
     system(paste("ln -s ",plink.file,".bim ./gen.bim",sep=""))
     system(paste("ln -s ",plink.file,".fam ./gen.fam",sep=""))
@@ -129,7 +130,7 @@ make_pgs(plink.file="~/igss/ceu-qc-small",gwas.file="~/igss/bmi-gwas.result",out
 #to do this, it will help to focus the gwas results on just those markers in our .bim file
 read.table("~/igss/bmi-gwas.result",header=TRUE)->bmi.gwas
 read.table("~/igss/ceu-qc-small.bim",header=FALSE)->bim
-#bmi.gwas[bmi.gwas[,1] %in% bim[,2],]->bmi.gwas
+bmi.gwas[bmi.gwas[,1] %in% bim[,2],]->bmi.gwas
 write.table(bmi.gwas,file="bmi-gwas-clump.result",quote=FALSE,row.names=FALSE)
 
 setwd("~/igss/")
