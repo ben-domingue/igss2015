@@ -1,5 +1,5 @@
 ##http://www.broadinstitute.org/collaboration/giant/images/1/15/SNP_gwas_mc_merge_nogc.tbl.uniq.gz #don't run, this is where the GWAS results originate
-awk '{print $1, $2, $3, $7, $5}' ~/igss/SNP_gwas_mc_merge_nogc.tbl.uniq > ~/igss/bmi-gwas.result #bash, get select columns of the gwas file
+awk '{print $1, $2, $3, $7, $5}' ~/igss/SNP_gwas_mc_merge_nogc.tbl.uniq > bmi-gwas.result #bash, get select columns of the gwas file
 
 
 
@@ -122,25 +122,27 @@ make_pgs<-function(plink.file=NULL,gwas.file="/tmp/GWAS.result",wd="/tmp/grs/",o
 }
 
 
-setwd("~/igss/")
-#first score without clumping
-make_pgs(plink.file="~/igss/ceu-qc-small",gwas.file="~/igss/bmi-gwas.result",out.name="bmi-2",clump=FALSE,wd="/tmp/pgs-c2/")
+#first score without clumping, CHANGE FILENAME BELOW
+make_pgs(plink.file="~/bd/ceu-qc-small",gwas.file="~/bd/bmi-gwas.result",out.name="~/bd/bmi-2",clump=FALSE,wd="/tmp/pgs-bd/")
+
+setwd("~/bd") #will need to change
 
 #now compute a clumped score
 #to do this, it will help to focus the gwas results on just those markers in our .bim file
-read.table("~/igss/bmi-gwas.result",header=TRUE)->bmi.gwas
-read.table("~/igss/ceu-qc-small.bim",header=FALSE)->bim
+read.table("bmi-gwas.result",header=TRUE)->bmi.gwas
+read.table("ceu-qc-small.bim",header=FALSE)->bim
 bmi.gwas[bmi.gwas[,1] %in% bim[,2],]->bmi.gwas
 write.table(bmi.gwas,file="bmi-gwas-clump.result",quote=FALSE,row.names=FALSE)
 
-setwd("~/igss/")
-make_pgs(plink.file="~/igss/ceu-qc-small",gwas.file="~/igss/bmi-gwas-clump.result",out.name="bmi-2cl",clump=TRUE,wd="/tmp/pgs-c2-cl/")
+make_pgs(plink.file="~/bd/ceu-qc-small",gwas.file="~/bd/bmi-gwas-clump.result",out.name="~/bd/bmi-2cl",clump=TRUE,wd="/tmp/pgs-bd-cl/")
+
+setwd("~/bd") #change
 
 read.table("~/igss/bmi.phen")->phen
 phen[,c(2,3)]->phen
-read.table("~/igss/bmi-2.profile")->prof
+read.table("bmi-2.profile")->prof
 prof[,c(2,6)]->prof1
-read.table("~/igss/bmi-2cl.profile")->prof
+read.table("bmi-2cl.profile")->prof
 prof[,c(2,6)]->prof2
 merge(phen,prof1,by=1)->tmp
 merge(tmp,prof2,by=1)->tmp

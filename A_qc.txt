@@ -1,12 +1,12 @@
 #all bash commands
 
-cd igss
+cd bd
 
 #this creates binaries from the original hapmap files which were raw text
-##plink --file ./hapmap3_pop/hapmap3_r2_b36_fwd.CEU.qc.poly --make-bed --out ceu  #time consuming, i ran for you.
+##plink --file ~/igss//hapmap3_pop/hapmap3_r2_b36_fwd.CEU.qc.poly --make-bed --out ceu  #time consuming, i ran for you.
 
 #this prunes the ceu files. three filters were imposed: genotype missingness, maf, and hwe
-plink --bfile ceu  --geno 0.05  --maf .01 --hwe 0.001 --make-bed --out ceu-qc 
+plink --bfile ~/igss/ceu  --geno 0.05  --maf .01 --hwe 0.001 --make-bed --out ceu-qc 
 
 #smaller set of markers just to make our lives easier.
 plink --bfile ceu-qc  --thin 0.3 --make-bed --out ceu-qc-small --seed 1444792558

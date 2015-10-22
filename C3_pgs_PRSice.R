@@ -1,8 +1,8 @@
-cd ~/igss
+cd bd #change!
 
 #first do some fine-tuning just to get the data all as needed.
 #.assoc: snp, a1, p beta
-awk '{print $1, $2, $7, $5}' ~/igss/SNP_gwas_mc_merge_nogc.tbl.uniq > ~/igss/bmi-gwas-prsice.assoc #bash
+awk '{print $1, $2, $7, $5}' ~/igss/SNP_gwas_mc_merge_nogc.tbl.uniq > bmi-gwas-prsice.assoc #bash
 sed 's/p/P/' bmi-gwas-prsice.assoc | sed 's/b/BETA/' > bmi-gwas-prsice.assoc2 #bash
 #.phen file
 awk '{print $2, $3}' ~/igss/bmi.phen > bmi-prsice.phen #bash
@@ -22,7 +22,7 @@ figname bmi-3 \
 binary.target F 
 
 #compare in R
-read.table("~/igss/bmi-3_SCORES_AT_ALL_THRESHOLDS.txt",header=TRUE)->sc
+read.table("bmi-3_SCORES_AT_ALL_THRESHOLDS.txt",header=TRUE)->sc
 read.table("~/igss/bmi.phen")->phen
 phen[,c(2,3)]->phen
 merge(phen,sc,by=1)->tmp
